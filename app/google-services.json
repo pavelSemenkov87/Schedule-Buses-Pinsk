@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "165659049845",
+    "project_id": "default-demo-app-dfbf0"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165659049845:android:73a4fb8297b2cd4f",
+        "android_client_info": {
+          "package_name": "com.google.samples.quickstart.analytics"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX5XkBTjQA3D1kOvdIYtotAbfiSVNfICc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-81252637-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165659049845:android:19752b5a219fbcb3",
+        "android_client_info": {
+          "package_name": "pavelsemenkov.bus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX5XkBTjQA3D1kOvdIYtotAbfiSVNfICc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-81252637-2"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

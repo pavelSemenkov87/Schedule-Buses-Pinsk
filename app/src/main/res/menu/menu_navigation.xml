@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="@string/appdateName">
+        <menu>
+            <item
+                android:id="@+id/set_appdate"
+                android:icon="@drawable/ic_stat_name"
+                android:title="@string/appdate" />
+        </menu>
+    </item>
+    <item android:title="@string/appdateSetting">
+        <menu>
+            <group android:checkableBehavior="none">
+                <item
+                    android:id="@+id/one_week"
+                    android:title="@string/appdateWeek" />
+                <item
+                    android:id="@+id/one_month"
+                    android:title="@string/appdateMonth" />
+                <item
+                    android:id="@+id/never_remind"
+                    android:buttonTint="@color/colorPrimary"
+                    android:title="@string/appdateNewer" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/chengCity">
+        <menu>
+            <group android:checkableBehavior="none">
+                <item
+                    android:id="@+id/pinsk_city"
+                    android:title="@string/tab1" />
+                <item
+                    android:id="@+id/pinsk_intercity"
+                    android:buttonTint="@color/colorPrimary"
+                    android:title="@string/tab2" />
+                <item
+                    android:id="@+id/ivanovo_intercity"
+                    android:buttonTint="@color/colorPrimary"
+                    android:title="@string/tab3" />
+                <item
+                    android:id="@+id/logishin_intercity"
+                    android:title="@string/tab4" />
+                <item />
+            </group>
+        </menu>
+    </item>
+</menu>

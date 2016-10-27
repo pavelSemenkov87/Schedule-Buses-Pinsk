@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#ff1a237e</color>
+    <color name="colorBusItem">#ff000000</color>
+    <color name="colorPrimary">#ff3f51b5</color>
+    <color name="colorPrimaryDark">#ff283593</color>
+    <color name="colorWhite">#ffe8eaf6</color>
+    <color name="mainBackground">#ffe8eaf6</color>
+</resources>

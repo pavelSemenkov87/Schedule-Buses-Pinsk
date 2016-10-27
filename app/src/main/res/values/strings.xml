@@ -1,0 +1,53 @@
+<resources>
+    <string name="AppdataMes">Процесс обновления может занять несколько минут, пожалуйста дождитесь окончания</string>
+    <string name="AppdataTitle">Идет обновление расписания</string>
+    <string name="LoadMes">Процесс загрузки может занять несколько минут, пожалуйста дождитесь окончания</string>
+    <string name="LoadTitle">Идет загрузка расписания</string>
+    <string name="app_name">Расписание автобусов Пинск</string>
+    <string name="app_title">Расписание автобусов</string>
+    <string name="appbar_scrolling_view_behavior">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="appdate">Обновить расписание</string>
+    <string name="appdateName">Обновление</string>
+    <string name="appdateSetting">Напомнить обновить расписание</string>
+    <string name="appdateWeek">Через неделю</string>
+    <string name="appdateMonth">Через месяц</string>
+    <string name="appdateNewer">Не напоминать</string>
+    <string name="bottom_sheet_behavior">android.support.design.widget.BottomSheetBehavior</string>
+    <string name="countryBus">Междугородние автобусы</string>
+    <string name="setting">Настройки</string>
+    <string name="changes">Изменения вступят в силу при следующем запуске</string>
+    <string name="massage">Нажмите на номер, чтобы позвонить.</string>
+    <string name="NoInternet">Нет доступа в интернет. Включите передачу данных и повторите попытку</string>
+    <string name="NoDownload">Для загрузки расписания нужен доступ в интернет. Включите передачу данных и повторите попытку</string>
+    <string name="chengCity">Выберите нужные пункты</string>
+    <string name="sityBus">Городские Автобусы</string>
+    <string name="sityTaxi">Такси в Пинске</string>
+    <string name="interTaxi">Междугородние маршрутные такси</string>
+    <string name="tab1">Городские Автобусы</string>
+    <string name="tab2">АВ "Пинск"</string>
+    <string name="tab3">АС "Иваново"</string>
+    <string name="tab4">АС "Логишин"</string>
+    <string name="tabBusText">Для работы приложения нужен доступ в интернет</string>
+    <string name="intBusInf">Информация</string>
+    <string name="tabHeder">Расписание</string>
+    <string name="tabOStopText">Выберети остановку из списка остановок</string>
+    <string name="tabStopText">Сегодня автобус не ходит. Выберети другой день недели в меню.</string>
+    <string name="view_navigation_close">закрыто</string>
+    <string name="view_navigation_open">открыто</string>
+    <string name="item_1">открыто</string>
+    <string name="item_2">открыто</string>
+    <string name="item_3">открыто</string>
+    <string name="RemindMe_body">
+        <![CDATA[
+            <b>Внимание !!!</b><br/>
+            Расписание было загружено: %s<br/>
+            Возможно оно изменилось и его необходимо обновить.<br/>
+            Для этого в меню выберите пункт &laquo;"Обновить расписание"&raquo;<br/>
+        ]]>
+    </string>
+    <string name="idBanner">ca-app-pub-7423562595113044/8766328816</string>
+
+    <string name="txt_sms_address_heading">From:</string>
+    <string name="txt_sms_date_heading">Date:</string>
+    <string name="btn_mark_read_text">Mark as read</string>
+</resources>

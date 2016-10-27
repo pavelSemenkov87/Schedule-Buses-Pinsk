@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:card="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bus_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2dp"
+    android:layout_marginTop="2dp"
+    card:cardElevation="2dp"
+    card_view:cardCornerRadius="20dp"
+    card:cardUseCompatPadding="true"
+    style="@style/CardView.Light">
+
+    <TextView
+        android:id="@+id/route_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="9dp"
+        android:textColor="#000000"
+        style="@style/Base.TextAppearance.AppCompat.Body2" />
+</android.support.v7.widget.CardView>
