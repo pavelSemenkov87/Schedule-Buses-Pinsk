@@ -54,10 +54,10 @@ public class IntStopAdapter extends RecyclerView.Adapter<IntStopAdapter.StopHold
         }
         CardView.LayoutParams lp =  new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT>=21){
-            if(stopList.size()-1==position){
-                lp.setMargins(0,4,0,70);//добавляет отступ после последнего элемента чтобы можно было нажимать
-            }else if (position==0){
+            if(position==0){
                 lp.setMargins(0,48,0,4);//Добавляем отступ перед первым элементом
+            }else if (stopList.size()-1==position){
+                lp.setMargins(0,4,0,70);//добавляет отступ после последнего элемента чтобы можно было нажимать
             }else {
                 lp.setMargins(0,4,0,4);
             }

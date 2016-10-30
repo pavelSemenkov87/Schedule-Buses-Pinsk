@@ -10,7 +10,7 @@ import java.util.Map;
 
 import pavelsemenkov.bus.fragment.AbstractTabFragment;
 import pavelsemenkov.bus.fragment.BusFragent.BusListFragmentDB;
-import pavelsemenkov.bus.fragment.IntersitiFragment.IntBusListFragmentDB;
+import pavelsemenkov.bus.fragment.InterсityFragment.IntBusListFragmentDB;
 
 public class TabFragmentAdapter extends FragmentPagerAdapter {
 

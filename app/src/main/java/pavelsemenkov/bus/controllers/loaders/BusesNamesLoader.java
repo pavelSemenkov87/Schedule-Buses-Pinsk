@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 
 import pavelsemenkov.bus.database.BusProvider;
+import pavelsemenkov.bus.database.BusTable;
 
 /**
  * Created by Павел on 17.10.2016.
@@ -47,21 +48,27 @@ public class BusesNamesLoader {
             content = doc.select(selectorBusesNames);
             progressCount = 0;
             for (Element contents : content) {
-                String busT = contents.text(), number;
-                int lengthTitle, lengthT = busT.length();
+                String busT = contents.text(), number, busName;
+                int lengthTitle = 0, lengthT = busT.length();
                 String[] busTitle;
                 link = contents.select("a").first();
+                if(progressCount == 15){
+                    progressCount=15;
+                }
                 String httpBus = link.attr("abs:href");
-                busTitle = busT.split("^\\d+\\s|^\\d+\\D\\s");
-                lengthTitle = busTitle[1].length();
+                busTitle = busT.split("^\\s?\\d+\\s[А-Яа-яA-Za-z]\\s|^\\s?\\d+\\s|^\\s?\\d+[А-Яа-яA-Za-z]\\s");
+                if(busTitle.length>1){
+                    lengthTitle = busTitle[1].length();
+                    busName = busTitle[1];
+                }else busName = "";
                 number = busT.substring(0, (lengthT - lengthTitle));
-                number = number.replaceAll("[\\s]{2,}", " ");
+                number = number.replaceAll("[\\s]+", "");
                 number = number.trim();
                 progressCount++;
                 cv.clear();
-                cv.put("bus_num", number);
-                cv.put("bus", busTitle[1]);
-                cv.put("http", httpBus);
+                cv.put(BusTable.COLUMN_BAS_NUMBER, number);
+                cv.put(BusTable.COLUMN_BAS_TEXT, busName);
+                cv.put(BusTable.COLUMN_BAS_HTTP, httpBus);
                 //Log.d(LOG_TAG, String.valueOf(progCount) + " bus rows " + busT + httpBus);
                 provider.insertT(BusProvider.CONTENT_BUS_URI, cv);
             }

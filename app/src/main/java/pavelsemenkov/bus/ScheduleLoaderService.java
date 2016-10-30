@@ -13,8 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import pavelsemenkov.bus.controllers.loaders.BusesNamesLoader;
-import pavelsemenkov.bus.controllers.loaders.CityBusesRoutsLoader;
-import pavelsemenkov.bus.controllers.loaders.IntercityBusesRoutsLoader;
+import pavelsemenkov.bus.controllers.loaders.BusesRoutsLoader;
 import pavelsemenkov.bus.controllers.loaders.myProgressDialog;
 import pavelsemenkov.bus.database.BusProvider;
 import pavelsemenkov.bus.model.AsyncResult;
@@ -99,12 +98,14 @@ public class ScheduleLoaderService extends Service {
                 provider = (BusProvider) providerClient.getLocalContentProvider();
                 provider.reset();
                 provider.beginTransaction();
+                activity.runOnUiThread(new myProgressDialog(activity, title, mesege));
                 BusesNamesLoader busesNamesLoader = BusesNamesLoader.getInstance(provider, httpBusesNames, selectorBusesNames);
                 data.setData(busesNamesLoader.loadBusesNames());
                 progressCount = busesNamesLoader.getProgressCount() + httpInterCity.length;
-                activity.runOnUiThread(new myProgressDialog(activity, progressCount, title, mesege));
-                data.setData(CityBusesRoutsLoader.getInstance(provider).loadBusesRouts());
-                data.setData(IntercityBusesRoutsLoader.getInstance(provider, httpInterCity, selectorIntersityBuses).loadIntercityBusesRouts());
+                myProgressDialog.SetMaxProgressCount(progressCount);
+                data.setData(BusesRoutsLoader.getInstance(provider, httpInterCity, selectorIntersityBuses).loadBusesRouts());
+                //data.setData(IntercityBusesRoutsLoader.getInstance(provider, httpInterCity, selectorIntersityBuses).loadIntercityBusesRouts());
+                myProgressDialog.SetProgressCount(ScheduleLoaderService.IncrementProgressCount());
                 provider.setTransactionSuccessful();
             } catch (Exception e) {
                 data.setException(e);
@@ -132,5 +133,7 @@ public class ScheduleLoaderService extends Service {
     public static int IncrementProgressCount() {
         return k++;
     }
-
+    public static int getCountFinishThread() {
+        return k;
+    }
 }

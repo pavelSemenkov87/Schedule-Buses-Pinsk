@@ -72,11 +72,11 @@ public class BusProvider extends ContentProvider {
     public int bulkInsert(Uri uri, ContentValues[] values) {
         int updatedRowsCount = 0;
         for (ContentValues cv : values) {
-            boolean success = sqlDB.insertWithOnConflict(uri.getLastPathSegment(), null, cv, SQLiteDatabase.CONFLICT_REPLACE) != -1;
+            boolean success = sqlDB.insertWithOnConflict(uri.getLastPathSegment(), null, cv, SQLiteDatabase.CONFLICT_IGNORE) != -1;
             if (success) ++updatedRowsCount;
         }
         getContext().getContentResolver().notifyChange(uri, null);
-        Log.d(LOG_TAG, "CityBusRoutAsyncLoader provider.bulkInsert finish");
+        Log.d(LOG_TAG, "CityBusRoutLoadThread provider.bulkInsert finish");
         return updatedRowsCount;
     }
 

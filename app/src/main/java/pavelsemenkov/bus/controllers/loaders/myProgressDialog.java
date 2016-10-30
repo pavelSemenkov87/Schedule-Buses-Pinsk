@@ -20,10 +20,10 @@ public class myProgressDialog  implements Runnable {
     private static int k;
     private String tit, mes;
     private final String LOG_TAG = "myLogs";
+    private static android.app.ProgressDialog pd;
 
-    public myProgressDialog(AppCompatActivity activity, int progressCount, String tit, String mes){
+    public myProgressDialog(AppCompatActivity activity, String tit, String mes){
         this.activity = activity;
-        this.progressCount = progressCount;
         this.tit = tit;
         this.mes = mes;
     }
@@ -31,8 +31,7 @@ public class myProgressDialog  implements Runnable {
     public void run() {
         Log.d(LOG_TAG, "--- loadDB 1 ---");
         final ModelNavigationView modelNavigationView = ModelNavigationView.getInstance(activity);
-        final android.app.ProgressDialog pd = new android.app.ProgressDialog(activity);
-        pd.setMax(progressCount);
+        pd = new android.app.ProgressDialog(activity);
         pd.setTitle(tit);
         pd.setMessage(mes);
         pd.setCancelable(false);
@@ -49,8 +48,7 @@ public class myProgressDialog  implements Runnable {
                 int total = msg.arg1;
                 pd.setProgress(total);
                 if (pd.getProgress() < pd.getMax()) {
-                    // увеличиваем значения индикатора
-                    //pd.incrementProgressBy(1);
+
                 } else {
                     pd.dismiss();
                     Calendar validDate = Calendar.getInstance();
@@ -64,5 +62,8 @@ public class myProgressDialog  implements Runnable {
         Message msg = h.obtainMessage();
         msg.arg1 = k;
         h.sendMessage(msg);
+    }
+    public static void SetMaxProgressCount(int progressCount) {
+        pd.setMax(progressCount);
     }
 }

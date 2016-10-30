@@ -1,7 +1,6 @@
 package pavelsemenkov.bus.controllers.loaders;
 
 import android.content.ContentValues;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
@@ -15,94 +14,28 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pavelsemenkov.bus.database.BusProvider;
+import pavelsemenkov.bus.ScheduleLoaderService;
 import pavelsemenkov.bus.database.BusTable;
 
-class CityBusRoutAsyncLoader extends AsyncTask<Void, Void, List<ContentValues>> {
+class CityBusRoutLoadThread implements Runnable {
 
     private ArrayList<String> stopList = new ArrayList<String>();
     private int stop_int;
     private String stop_day, http, num;
     private boolean stop_pay = false, loadFinish;
     private int id;
-    private BusProvider provider;
+    private Object sync;
+    private List<ContentValues> allValues;
     final String LOG_TAG = "myLogs";
     private Elements contentr;
 
-    public CityBusRoutAsyncLoader(BusProvider provider, int id, String num, String http) {
-        this.provider = provider;
+    public CityBusRoutLoadThread(int id, String num, String http, List<ContentValues> allValues,  Object sync) {
         this.id = id;
         this.num = num;
         this.http = http;
-        loadFinish = false;
+        this.allValues = allValues;
+        this.sync = sync;
     }
-    public boolean getIsFinish(){return loadFinish;}
-
-    protected List<ContentValues> doInBackground(Void... params) {
-        List<ContentValues> values = new ArrayList<>();
-        ContentValues cv = new ContentValues();
-        stop_int = 8;
-        stop_pay = false;
-        boolean day = false;
-        String pay = null;
-        for (String contents : GetStopList(http)) {
-            cv.clear();
-            if (stop_pay) cv.put(BusTable.COLUMN_BUS_STOP_PAY, pay);
-            String stopD;
-            stopD = contents.replaceAll("([01]?[0-9]|2[0-3]):[0-5][0-9]|^\\s*", "");//уберем время
-            stopD = stopD.replaceAll("[\\s]{2,}", " ");//уберем пробелы
-            stopD = stopD.replaceAll("[\\s-]{2,}", "");//уберем пробелы и -
-            stopD = stopD.trim();
-            stopD = stopD.replaceAll("-+$", "");//уберем "-" в конце
-            if (stopD == "") {
-                continue;
-            }
-            Pattern n = Pattern.compile("([01]?[0-9]|2[0-3]):[0-5][0-9]", Pattern.MULTILINE);//оставим только время
-            Matcher m = n.matcher(contents);
-            boolean print = false;
-            String timeD = "";
-            while (m.find()) {
-                print = true;
-                timeD = timeD + " " + m.group();
-            }
-            if (print) {
-                cv.put(BusTable.COLUMN_BUS_STOP_TIME, timeD);
-                cv.put(BusTable.COLUMN_BUS_STOP, stopD);
-            } else {
-                if (getStopPeriod(stopD)) {
-                    day = true;
-                } else if (stop_pay) {
-                    pay = stopD;
-                }
-                continue;
-            }
-            if (day) {
-                cv.put(BusTable.COLUMN_BUS_STOP_WEEK_DAY_CODE, stop_int);
-                cv.put(BusTable.COLUMN_BUS_STOP_WEEK_DAY_NAME, stop_day);
-                cv.put(BusTable.COLUMN_BUS_STOP_PAY, pay);
-                cv.put(BusTable.COLUMN_BUS_STOP_NAME, num);
-                cv.put(BusTable.COLUMN_INT_BUS_ID, id);
-                values.add(cv);
-                //String p = pay==null ? "null": pay;
-                //Log.d(LOG_TAG, "stop rows " + stopD + timeD+" "+Integer.toString(stop_int)+" "+stop_day+" "+p+" "+c.getString(numColIndex)+" "+c.getInt(idColIndex));
-            }
-        }
-        //Log.d(LOG_TAG, "k = " + String.valueOf(k));
-        stopList.clear();
-        Log.d(LOG_TAG, "CityBusRoutAsyncLoader");
-        return values;
-    }
-
-    protected void onPostExecute(List<ContentValues> value) {
-        if (value.size()>0){
-            Log.d(LOG_TAG, "CityBusRoutAsyncLoader provider.bulkInsert");
-            provider.bulkInsert(BusProvider.CONTENT_STOP_CITY_URI, value.toArray(new ContentValues[value.size()]));
-            loadFinish = true;
-        }
-        //myProgressDialog.SetProgressCount();
-    }
-
-
     private boolean getStopPeriod(String str) {
         boolean insert = false;
         if (str.contains("Рабочие дни")) {
@@ -195,6 +128,64 @@ class CityBusRoutAsyncLoader extends AsyncTask<Void, Void, List<ContentValues>> 
             e.printStackTrace();
         }
         return stopList;
+    }
+
+    @Override
+    public void run() {
+        List<ContentValues> values = new ArrayList<>();
+        stop_int = 8;
+        stop_pay = false;
+        boolean day = false;
+        String pay = null;
+        for (String contents : GetStopList(http)) {
+            ContentValues cv = new ContentValues();
+            if (stop_pay) cv.put(BusTable.COLUMN_BUS_STOP_PAY, pay);
+            String stopD;
+            stopD = contents.replaceAll("([01]?[0-9]|2[0-3]):[0-5][0-9]|^\\s*", "");//уберем время
+            stopD = stopD.replaceAll("[\\s]{2,}", " ");//уберем пробелы
+            stopD = stopD.replaceAll("[\\s-]{2,}", "");//уберем пробелы и -
+            stopD = stopD.trim();
+            stopD = stopD.replaceAll("-+$", "");//уберем "-" в конце
+            if (stopD == "") {
+                continue;
+            }
+            Pattern n = Pattern.compile("([01]?[0-9]|2[0-3]):[0-5][0-9]", Pattern.MULTILINE);//оставим только время
+            Matcher m = n.matcher(contents);
+            boolean print = false;
+            String timeD = "";
+            while (m.find()) {
+                print = true;
+                timeD = timeD + " " + m.group();
+            }
+            if (print) {
+                cv.put(BusTable.COLUMN_BUS_STOP_TIME, timeD);
+                cv.put(BusTable.COLUMN_BUS_STOP, stopD);
+            } else {
+                if (getStopPeriod(stopD)) {
+                    day = true;
+                } else if (stop_pay) {
+                    pay = stopD;
+                }
+                continue;
+            }
+            if (day) {
+                cv.put(BusTable.COLUMN_BUS_STOP_WEEK_DAY_CODE, stop_int);
+                cv.put(BusTable.COLUMN_BUS_STOP_WEEK_DAY_NAME, stop_day);
+                cv.put(BusTable.COLUMN_BUS_STOP_PAY, pay);
+                cv.put(BusTable.COLUMN_BUS_STOP_NAME, num);
+                cv.put(BusTable.COLUMN_INT_BUS_ID, id);
+                values.add(cv);
+                //String p = pay==null ? "null": pay;
+                //Log.d(LOG_TAG, "stop rows " + stopD + timeD+" "+Integer.toString(stop_int)+" "+stop_day+" "+p+" "+c.getString(numColIndex)+" "+c.getInt(idColIndex));
+            }
+        }
+        BusesRoutsLoader.addListBusStop(values);
+        stopList.clear();
+        myProgressDialog.SetProgressCount(ScheduleLoaderService.IncrementProgressCount());
+        synchronized(sync){
+            sync.notify();
+        }
+        Log.d(LOG_TAG, "CityBusRoutLoadThread"+Thread.currentThread().getId());
     }
 }
 

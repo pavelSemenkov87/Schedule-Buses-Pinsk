@@ -32,10 +32,6 @@
             android:name=".ScheduleLoaderService"
             android:enabled="true">
         </service>
-        <service
-            android:name="controllers.loaders.MyService"
-            android:enabled="true">
-        </service>
         <provider
             android:name=".database.BusProvider"
             android:exported="false"

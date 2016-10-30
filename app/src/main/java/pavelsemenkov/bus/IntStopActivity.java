@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import pavelsemenkov.bus.fragment.Dialog2;
-import pavelsemenkov.bus.fragment.IntersitiFragment.IntStopFragmentDB;
+import pavelsemenkov.bus.fragment.InterсityFragment.IntStopFragmentDB;
 import pavelsemenkov.bus.database.DBHelper;
 
 public class IntStopActivity extends AppCompatActivity {

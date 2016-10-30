@@ -1,4 +1,4 @@
-package pavelsemenkov.bus.fragment.IntersitiFragment;
+package pavelsemenkov.bus.fragment.InterсityFragment;
 
 import android.content.Context;
 import android.os.Bundle;

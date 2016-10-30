@@ -2,11 +2,9 @@ package pavelsemenkov.bus;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,13 +17,11 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import pavelsemenkov.bus.database.BusProvider;
-import pavelsemenkov.bus.database.BusTable;
 import pavelsemenkov.bus.database.DBHelper;
 import pavelsemenkov.bus.fragment.StopFragment.FirstStopFragment;
 import pavelsemenkov.bus.fragment.StopFragment.StopFragmentDB;
 
-public class StopActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks, StopFragmentDB.busListEventListener {
+public class StopActivity extends AppCompatActivity  implements StopFragmentDB.busListEventListener  {
 
 
     private String busName, busId;
@@ -33,8 +29,6 @@ public class StopActivity extends AppCompatActivity implements LoaderManager.Loa
     private int i, j, busStopInt, noSetMenItem = -1;
     private FragmentTransaction fTrans;
     private DBHelper dbHelper;
-    private final int LOADER_ID_UPDATE_SCHEDULE = 5;
-    private final int LOADER_ID_GET_SCHEDULE = 6;
     private Menu menu;
     private Toolbar toolbarStop;
     final String LOG_TAG = "myLogs";
@@ -47,91 +41,62 @@ public class StopActivity extends AppCompatActivity implements LoaderManager.Loa
         Intent intent = getIntent();
         busName = intent.getStringExtra("title");
         busId = intent.getStringExtra("id");
-        getSupportLoaderManager().initLoader(LOADER_ID_GET_SCHEDULE, null, this);
-    }
 
-    @Override
-    public void onPostResume(){
-        super.onPostResume();
-        getSupportLoaderManager().initLoader(LOADER_ID_GET_SCHEDULE, null, this);
+        initToolbar();
+        initDayView(getStopData());
+
     }
     @Override
-    public Loader onCreateLoader(int loaderId, Bundle args) {
-        switch (loaderId) {
-            case LOADER_ID_UPDATE_SCHEDULE:
-                //return new ScheduleLoader(getActivity());
-            case LOADER_ID_GET_SCHEDULE:
-                return new CursorLoader(this,
-                        BusProvider.CONTENT_STOP_CITY_URI,
-                        BusTable.BUS_STOP_PROJECTION,
-                        "bus_id = ?",
-                        new String[]{busId},
-                        null
-                );
+    protected void onRestart() {
+        super.onRestart();
+        if (stopData == null){
+            getStopData();
         }
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader loader, Object data) {
-        switch (loader.getId()) {
-            case LOADER_ID_UPDATE_SCHEDULE:
-                break;
-            case LOADER_ID_GET_SCHEDULE:
-                Cursor cursor = (Cursor) data;
-                stopData = getStopData(cursor);
-                initToolbar();
-                initDayView(stopData);
-                break;
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader loader) {
-
     }
 
     private void initDayView(Map<Integer, ArrayList<ArrayList<String>>> stopData) {
-        GregorianCalendar newCal = new GregorianCalendar();
-        String day = Integer.toString(newCal.get(Calendar.DAY_OF_WEEK) - 1);
+        GregorianCalendar newCal = new GregorianCalendar( );
+        String day = Integer.toString(newCal.get(Calendar.DAY_OF_WEEK)-1);
+        if (stopData == null){
+            stopData =  getStopData();
+        }
         Log.d(LOG_TAG, "initDayView");
         int size = stopData.size();
         boolean noData = true;
         fTrans = getSupportFragmentManager().beginTransaction();
-        for (int m = 0; m < size; m++) {
+        for (int m = 0; m < size; m++){
             String wD = stopData.get(m).get(0).get(2);
-            if (wD.contains(day)) {
-                fTrans.add(R.id.activity_stop_frame, StopFragmentDB.getInstance(this, stopData.get(m), stopData.get(m).get(0).get(4), toolbarStop));
+            if(wD.contains(day)){
+                fTrans.add(R.id.activity_stop_frame, StopFragmentDB.getInstance(this, stopData.get(m), stopData.get(m).get(0).get(4), toolbarStop ));
                 noSetMenItem = m;
                 noData = false;
             }
         }
-        if (noData) {
+        if(noData){
             FirstStopFragment frag1 = new FirstStopFragment();
             fTrans.add(R.id.activity_stop_frame, frag1);
         }
-        fTrans.commitAllowingStateLoss();
+        fTrans.commit();
     }
 
 
     private void initToolbar() {
         toolbarStop = (Toolbar) findViewById(R.id.stop_toolbar);
         setSupportActionBar(toolbarStop);
-        getSupportActionBar().setTitle("№" + busName);
+        getSupportActionBar().setTitle("№"+busName);
 
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.stop_menu, menu);
         this.menu = menu;
         int size = stopData.size();
-        for (int m = 0; m < size; m++) {
-            if (m != noSetMenItem) {
+        for (int m = 0; m < size; m++){
+            if(m != noSetMenItem){
                 menu.add(0, m, 0, stopData.get(m).get(0).get(3))
                         .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
                                 | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-            } else {
+            }else {
                 menu.add(0, m, 0, stopData.get(m).get(0).get(3))
                         .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
                                 | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
@@ -146,10 +111,10 @@ public class StopActivity extends AppCompatActivity implements LoaderManager.Loa
         fTrans = getSupportFragmentManager().beginTransaction();
         int id = item.getItemId();
         int size = stopData.size();
-        for (int m = 0; m < size; m++) {
-            if (m != id) {
+        for (int m = 0; m < size; m++){
+            if(m != id){
                 menu.getItem(m).setVisible(true);
-            } else {
+            }else {
                 menu.getItem(m).setVisible(false);
             }
         }
@@ -162,12 +127,17 @@ public class StopActivity extends AppCompatActivity implements LoaderManager.Loa
         fTrans.commit();
         return super.onOptionsItemSelected(item);
     }
-
-    private Map<Integer, ArrayList<ArrayList<String>>> getStopData(Cursor c) {
+    private Map<Integer, ArrayList<ArrayList<String>>> getStopData() {
+        String selection = null;
+        String[] selectionArgs = null;
         ArrayList<ArrayList<String>> stopList = new ArrayList<>();
         stopList.add(new ArrayList<String>());
+        dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        selection = "bus_id = ?";
+        selectionArgs = new String[]{busId};
         busStopInt = 0;
-        int r = c.getCount();
+        Cursor c = db.query("stop", null, selection, selectionArgs, null, null, null);
         if (c.moveToFirst()) {
             i = 0;
             j = 0;
@@ -178,11 +148,11 @@ public class StopActivity extends AppCompatActivity implements LoaderManager.Loa
             int busStopColIndex = c.getColumnIndex("bus_stop");
             do {
                 int inte = c.getInt(busStopIntColIndex);
-                if (busStopInt == inte) {
-                    stopData.get(j - 1).add(new ArrayList<String>());
-                    stopData.get(j - 1).get(i).add(0, c.getString(busStopColIndex));
-                    stopData.get(j - 1).get(i).add(1, c.getString(busTimeColIndex));
-                } else {
+                if(busStopInt == inte){
+                    stopData.get(j-1).add(new ArrayList<String>());
+                    stopData.get(j-1).get(i).add(0, c.getString(busStopColIndex));
+                    stopData.get(j-1).get(i).add(1, c.getString(busTimeColIndex));
+                }else{
                     i = 0;
                     stopList = new ArrayList<ArrayList<String>>();
                     stopList.add(new ArrayList<String>());
@@ -198,6 +168,7 @@ public class StopActivity extends AppCompatActivity implements LoaderManager.Loa
                 i++;
             } while (c.moveToNext());
         } else Log.d(LOG_TAG, "GetBus 0 rows");
+        dbHelper.close();
         return stopData;
     }
 
