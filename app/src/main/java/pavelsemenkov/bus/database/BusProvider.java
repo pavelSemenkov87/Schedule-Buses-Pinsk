@@ -27,6 +27,7 @@ public class BusProvider extends ContentProvider {
 
     public static final Uri CONTENT_BUS_URI = Uri.parse("content://" + AUTHORITY + "/" + BusTable.TABLE_BUS_NAME);
     public static final Uri CONTENT_STOP_CITY_URI = Uri.parse("content://" + AUTHORITY + "/" + BusTable.TABLE_BUS_STOP_NAME);
+    public static final Uri CONTENT_BASIC_OTHER_STOP_URI = Uri.parse("content://" + AUTHORITY + "/" + BusTable.TABLE_BASIC_OTHER_STOP_NAME);
     public static final Uri CONTENT_INTERCITY_BUS_CITY_URI = Uri.parse("content://" + AUTHORITY + "/" + BusTable.TABLE_INTERCITY_BUS_NAME);
     public static final Uri CONTENT_INTERCITY_BUS_STOP_URI = Uri.parse("content://" + AUTHORITY + "/" + BusTable.TABLE_INTERCITY_BUS_STOP_NAME);
     public static final Uri DATABUSE_URI = Uri.parse("content://" + AUTHORITY);
@@ -207,6 +208,10 @@ public class BusProvider extends ContentProvider {
             case "/" + BusTable.TABLE_INTERCITY_BUS_NAME:
                 tableName = BusTable.TABLE_INTERCITY_BUS_NAME;
                 available = BusTable.INTERCITY_BUS_PROJECTION;
+                break;
+            case "/" + BusTable.TABLE_BASIC_OTHER_STOP_NAME:
+                tableName = BusTable.TABLE_BASIC_OTHER_STOP_NAME;
+                available = BusTable.BASIC_OTHER_STOP_PROJECTION;
                 break;
             case "/" + BusTable.TABLE_INTERCITY_BUS_STOP_NAME:
                 tableName = BusTable.TABLE_INTERCITY_BUS_STOP_NAME;

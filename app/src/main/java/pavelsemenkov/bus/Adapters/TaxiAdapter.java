@@ -62,10 +62,14 @@ public class TaxiAdapter extends RecyclerView.Adapter<TaxiAdapter.StopHolder> {
     }
 
     public static class StopHolder extends RecyclerView.ViewHolder{
+        private long StopId;
         TextView taxi_name, taxi_coll1 = new TextView(activity), taxi_coll2 = new TextView(activity),
                 taxi_coll3 = new TextView(activity), taxi_coll4 = new TextView(activity),
                 taxi_coll5 = new TextView(activity), taxi_coll6 = new TextView(activity);
         LinearLayout taxi_layout;
+        public void setStopId(long id) {
+            StopId = id;
+        }
         public StopHolder(View itemView) {
             super(itemView);
             taxi_name = (TextView) itemView.findViewById(R.id.taxi_name);

@@ -12,4 +12,10 @@
                 android:title="@string/interTaxi" />
         </menu>
     </item>
+    <item android:id="@+id/otherStopItem"
+        android:icon="@drawable/ic_database_plus">
+    </item>
+    <item android:id="@+id/google_maps"
+        android:icon="@drawable/ic_google_maps">
+    </item>
 </menu>

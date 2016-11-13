@@ -20,6 +20,14 @@ public class BusTable {
     public static final String COLUMN_BUS_STOP_WEEK_DAY_NAME = "bus_stop_day";
     public static final String COLUMN_BUS_STOP = "bus_stop";
 
+    public static final String TABLE_BASIC_OTHER_STOP_NAME = "basic_other_stop";
+    public static final String COLUMN_BASIC_NEXT_STOP_ID = "_id";
+    public static final String COLUMN_BASIC_ROOT_STOP_ID = "root_id";
+    public static final String COLUMN_BASIC_NEXT_STOP_NAME = "next_stop_name";
+    public static final String COLUMN_BASIC_ROOT_STOP_NAME = "root_stop_name";
+    public static final String COLUMN_BASIC_ROOT_STOP_TARGET_LAT = "root_stop_coord_lat";
+    public static final String COLUMN_BASIC_ROOT_STOP_TARGET_LNG = "root_stop_coord_lng";
+
     public static final String TABLE_INTERCITY_BUS_NAME = "intercity_bus";
     public static final String COLUMN_ID_INT_BUS = "_id";
     public static final String COLUMN_INT_ROUTE_TYP = "route_typ";
@@ -43,6 +51,11 @@ public class BusTable {
             COLUMN_ID_BUS_STOP, COLUMN_BUS_ID, COLUMN_BUS_STOP_PAY,
             COLUMN_BUS_STOP_NAME, COLUMN_BUS_STOP_TIME, COLUMN_BUS_STOP_WEEK_DAY_CODE,
             COLUMN_BUS_STOP_WEEK_DAY_NAME, COLUMN_BUS_STOP
+    };
+    public static final String[] BASIC_OTHER_STOP_PROJECTION = new String[] {
+            COLUMN_BASIC_NEXT_STOP_ID, COLUMN_BASIC_ROOT_STOP_ID,
+            COLUMN_BASIC_NEXT_STOP_NAME, COLUMN_BASIC_ROOT_STOP_NAME,
+            COLUMN_BASIC_ROOT_STOP_TARGET_LAT, COLUMN_BASIC_ROOT_STOP_TARGET_LNG
     };
     public static final String[] INTERCITY_BUS_PROJECTION = new String[] {
             COLUMN_ID_INT_BUS, COLUMN_INT_ROUTE_TYP, COLUMN_INT_CITY,
@@ -75,6 +88,17 @@ public class BusTable {
             + COLUMN_BUS_STOP + " text"
             + ");";
 
+    private static final String TABLE_BASIC_OTHER_STOP_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_BASIC_OTHER_STOP_NAME
+            + "("
+            + COLUMN_BASIC_NEXT_STOP_ID + " integer primary key autoincrement, "
+            + COLUMN_BASIC_ROOT_STOP_ID + " integer, "
+            + COLUMN_BASIC_NEXT_STOP_NAME + " text,"
+            + COLUMN_BASIC_ROOT_STOP_NAME + " text,"
+            + COLUMN_BASIC_ROOT_STOP_TARGET_LAT + " real,"
+            + COLUMN_BASIC_ROOT_STOP_TARGET_LNG + " real"
+            + ");";
+
     private static final String TABLE_INT_BUS_CREATE = "create table "
             + TABLE_INTERCITY_BUS_NAME
             + "("
@@ -97,6 +121,7 @@ public class BusTable {
     public static void onCreate(SQLiteDatabase database) {
         database.execSQL(TABLE_BUS_CREATE);
         database.execSQL(TABLE_BUS_STOP_CREATE);
+        database.execSQL(TABLE_BASIC_OTHER_STOP_CREATE);
         database.execSQL(TABLE_INT_BUS_CREATE);
         database.execSQL(TABLE_INT_BUS_STOP_CREATE);
     }
@@ -113,5 +138,8 @@ public class BusTable {
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_INTERCITY_BUS_STOP_NAME);
         onCreate(database);
     }
-
+    public static void resetOtherTable(SQLiteDatabase database){
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_BASIC_OTHER_STOP_NAME);
+        database.execSQL(TABLE_BASIC_OTHER_STOP_CREATE);
+    }
 }

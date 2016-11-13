@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentProviderClient;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,12 +16,9 @@ import pavelsemenkov.bus.controllers.loaders.BusesRoutsLoader;
 import pavelsemenkov.bus.controllers.loaders.myProgressDialog;
 import pavelsemenkov.bus.database.BusProvider;
 import pavelsemenkov.bus.model.AsyncResult;
-import pavelsemenkov.bus.model.ModelNavigationView;
 
 public class ScheduleLoaderService extends Service {
 
-    private AsyncResult<Boolean> mResult;
-    private ModelNavigationView modelNavigationView;
     public static final String TITLE = "title";
     public static final String MESEGE = "mesege";
     public static final String SELECTOR_BASES_NAMES = "select";
@@ -36,7 +32,6 @@ public class ScheduleLoaderService extends Service {
     private static int progressCount, k;
     private ContentProviderClient providerClient;
     private BusProvider provider;
-    private static Handler h;
     String[] httpInterCity;
     String title, mesege, selectorBusesNames, httpBusesNames, selectorIntersityBuses;
 

@@ -17,15 +17,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import pavelsemenkov.bus.database.BusTable;
-import pavelsemenkov.bus.database.DBHelper;
 import pavelsemenkov.bus.IntStopActivity;
 import pavelsemenkov.bus.R;
+import pavelsemenkov.bus.database.BusDbHelper;
+import pavelsemenkov.bus.database.BusTable;
 import pavelsemenkov.bus.fragment.AbstractTabFragment;
 
 public class IntBusListFragmentDB extends AbstractTabFragment {
 
-    private DBHelper dbHelper;
+    private BusDbHelper dbHelper;
     private ArrayList<ArrayList<String>> busList = new ArrayList<ArrayList<String>>();
     private Activity activity;
     private int city;
@@ -84,11 +84,10 @@ public class IntBusListFragmentDB extends AbstractTabFragment {
         if(busList.size()!=0)return busList;
         String selection = null;
         String[] selectionArgs = null;
-        dbHelper = new DBHelper(getActivity());
+        dbHelper = new BusDbHelper(getActivity());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         selection = "city = ?";
         selectionArgs = new String[]{Integer.toString(city)};
-        dbHelper = new DBHelper(activity);
         int i;
         Cursor c = db.query(BusTable.TABLE_INTERCITY_BUS_NAME, null, selection, selectionArgs, null, null, null);
         if (c.moveToFirst()) {

@@ -14,9 +14,9 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+import pavelsemenkov.bus.database.BusDbHelper;
 import pavelsemenkov.bus.fragment.Dialog2;
 import pavelsemenkov.bus.fragment.InterсityFragment.IntStopFragmentDB;
-import pavelsemenkov.bus.database.DBHelper;
 
 public class IntStopActivity extends AppCompatActivity {
 
@@ -25,7 +25,7 @@ public class IntStopActivity extends AppCompatActivity {
     private ArrayList<ArrayList<String>> stopList = new ArrayList<ArrayList<String>>();
     private int i, j, busStopInt, busIndex, noSetMenItem = -1, itemId = 123, DIALOG = 7;
     private FragmentTransaction fTrans;
-    private DBHelper dbHelper;
+    private BusDbHelper dbHelper;
     private Menu menu;
     private Toolbar toolbarStop;
     final String LOG_TAG = "myLogs";
@@ -98,7 +98,7 @@ public class IntStopActivity extends AppCompatActivity {
         String selection = null;
         String[] selectionArgs = null;
 
-        dbHelper = new DBHelper(this);
+        dbHelper = new BusDbHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         selection = "bus_id = ?";
         selectionArgs = new String[]{busId};

@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import pavelsemenkov.bus.Adapters.TabFragmentAdapter;
+import pavelsemenkov.bus.database.BusDbHelper;
 import pavelsemenkov.bus.database.BusTable;
-import pavelsemenkov.bus.database.DBHelper;
 import pavelsemenkov.bus.fragment.Dialog1;
 import pavelsemenkov.bus.model.ModelNavigationView;
 import pavelsemenkov.bus.views.MainActivty.MainActivityViewMvcImpl;
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Boolean> checketRemind = new ArrayList<>();
     private ViewPager viewPager;
     private TabFragmentAdapter adapter;
-    public static DBHelper dbHelper;
+    public static BusDbHelper dbHelper;
     public static AppCompatActivity instance;
     public boolean first = false;
     private final int LOADER_ID_UPDATE_SCHEDULE = 1;
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadDB(){
-        dbHelper = new DBHelper(activity);
+        dbHelper = new BusDbHelper(activity);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query(BusTable.TABLE_BUS_STOP_NAME, null, null, null, null, null, null);
         if (cursor == null || cursor.getCount() <= 0) {
@@ -178,6 +178,10 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_head, menu);
         menu.getItem(0).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
                 | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.getItem(1).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
+                | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.getItem(2).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
+                | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         return true;
     }
 
@@ -196,6 +200,16 @@ public class MainActivity extends AppCompatActivity {
                 intentT.putExtra("index", 2);
                 intentT.putExtra("title", getString(R.string.interTaxi));
                 startActivity(intentT);
+                break;
+            case R.id.otherStopItem:
+                /*dbHelper = new BusDbHelper(activity);
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                dbHelper.resetOtherStop(db);
+                dbHelper.close();*/
+                startActivity(new Intent(activity, OtherStopEditActivity.class));
+                break;
+            case R.id.google_maps:
+                startActivity(new Intent(activity, MapsActivity.class));
                 break;
             default:
                 break;
@@ -378,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
         modelNavigationView.saveMemuProperty(checketBus, setRem);
     }
 
-    public static DBHelper getDbHelper() {
+    public static BusDbHelper getDbHelper() {
         return dbHelper;
     }
 

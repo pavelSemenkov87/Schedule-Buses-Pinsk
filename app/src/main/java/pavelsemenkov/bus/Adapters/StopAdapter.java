@@ -30,8 +30,14 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.StopHolder> {
 
     @Override
     public void onBindViewHolder(StopHolder holder, int position) {
-        holder.stopN.setText(stopList.get(position).get(0)+" ("+day+")"+pay);
-        holder.stopT.setText(Html.fromHtml(stopList.get(position).get(1)));
+        String stopT = stopList.get(position).get(1);
+        if(stopT==" "){
+            holder.stopN.setText(stopList.get(position).get(0));
+            holder.stopT.setText(stopList.get(position).get(0));
+        }else {
+            holder.stopN.setText(stopList.get(position).get(0)+" ("+day+")"+pay);
+            holder.stopT.setText(Html.fromHtml(stopT));
+        }
         CardView.LayoutParams lp =  new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT);
         if (Build.VERSION.SDK_INT>=21){
             if(stopList.size()-1==position){

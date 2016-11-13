@@ -17,7 +17,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import pavelsemenkov.bus.database.DBHelper;
+import pavelsemenkov.bus.database.BusDbHelper;
+import pavelsemenkov.bus.database.BusTable;
 import pavelsemenkov.bus.fragment.StopFragment.FirstStopFragment;
 import pavelsemenkov.bus.fragment.StopFragment.StopFragmentDB;
 
@@ -28,7 +29,7 @@ public class StopActivity extends AppCompatActivity  implements StopFragmentDB.b
     private Map<Integer, ArrayList<ArrayList<String>>> stopData = new HashMap<>();
     private int i, j, busStopInt, noSetMenItem = -1;
     private FragmentTransaction fTrans;
-    private DBHelper dbHelper;
+    private BusDbHelper dbHelper;
     private Menu menu;
     private Toolbar toolbarStop;
     final String LOG_TAG = "myLogs";
@@ -132,20 +133,20 @@ public class StopActivity extends AppCompatActivity  implements StopFragmentDB.b
         String[] selectionArgs = null;
         ArrayList<ArrayList<String>> stopList = new ArrayList<>();
         stopList.add(new ArrayList<String>());
-        dbHelper = new DBHelper(this);
+        dbHelper = new BusDbHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        selection = "bus_id = ?";
+        selection = BusTable.COLUMN_BUS_ID + " = ?";
         selectionArgs = new String[]{busId};
         busStopInt = 0;
-        Cursor c = db.query("stop", null, selection, selectionArgs, null, null, null);
+        Cursor c = db.query(BusTable.TABLE_BUS_STOP_NAME, null, selection, selectionArgs, null, null, null);
         if (c.moveToFirst()) {
             i = 0;
             j = 0;
-            int busPayColIndex = c.getColumnIndex("bus_pay");
-            int busTimeColIndex = c.getColumnIndex("bus_time");
-            int busStopIntColIndex = c.getColumnIndex("bus_stop_int");
-            int busStopDayColIndex = c.getColumnIndex("bus_stop_day");
-            int busStopColIndex = c.getColumnIndex("bus_stop");
+            int busPayColIndex = c.getColumnIndex(BusTable.COLUMN_BUS_STOP_PAY);
+            int busTimeColIndex = c.getColumnIndex(BusTable.COLUMN_BUS_STOP_TIME);
+            int busStopIntColIndex = c.getColumnIndex(BusTable.COLUMN_BUS_STOP_WEEK_DAY_CODE);
+            int busStopDayColIndex = c.getColumnIndex(BusTable.COLUMN_BUS_STOP_WEEK_DAY_NAME);
+            int busStopColIndex = c.getColumnIndex(BusTable.COLUMN_BUS_STOP);
             do {
                 int inte = c.getInt(busStopIntColIndex);
                 if(busStopInt == inte){

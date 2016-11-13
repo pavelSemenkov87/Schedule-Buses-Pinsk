@@ -29,13 +29,14 @@ class CityBusRoutLoadThread implements Runnable {
     final String LOG_TAG = "myLogs";
     private Elements contentr;
 
-    public CityBusRoutLoadThread(int id, String num, String http, List<ContentValues> allValues,  Object sync) {
+    public CityBusRoutLoadThread(int id, String num, String http, List<ContentValues> allValues, Object sync) {
         this.id = id;
         this.num = num;
         this.http = http;
         this.allValues = allValues;
         this.sync = sync;
     }
+
     private boolean getStopPeriod(String str) {
         boolean insert = false;
         if (str.contains("Рабочие дни")) {
@@ -82,6 +83,7 @@ class CityBusRoutLoadThread implements Runnable {
                         sel = elements.get(i).toString().split("<br>");
                         for (String r : sel) {
                             Document text = Jsoup.parse(r);
+                            if (text.nodeName() == "hr") stopList.add("hr");
                             //r = r.replaceAll("<\\/?font.+?>|<b>|&nbsp;|<hr>|</font>", "");
                             stopList.add(text.text());
                         }
@@ -89,6 +91,7 @@ class CityBusRoutLoadThread implements Runnable {
                         Elements elements2 = elements.get(i).children();
                         int size2 = elements2.size();
                         for (int j = 0; j < size2; j++) {
+                            if (elements2.get(j).nodeName() == "hr") stopList.add("hr");
                             Elements elements3 = elements2.get(j).children();
                             int size3 = elements3.size();
                             if (size3 > 3) {
@@ -103,6 +106,7 @@ class CityBusRoutLoadThread implements Runnable {
                         }
                         if (size2 == 0) {
                             stopList.add(elements.get(i).text());
+                            if (elements.get(i).nodeName() == "hr") stopList.add("hr");
                         }
                     }
                 }
@@ -160,6 +164,10 @@ class CityBusRoutLoadThread implements Runnable {
             if (print) {
                 cv.put(BusTable.COLUMN_BUS_STOP_TIME, timeD);
                 cv.put(BusTable.COLUMN_BUS_STOP, stopD);
+            } else if (stopD.contains("hr")) {
+                day = true;
+                cv.put(BusTable.COLUMN_BUS_STOP_TIME, "");
+                cv.put(BusTable.COLUMN_BUS_STOP, "<=====================================>");
             } else {
                 if (getStopPeriod(stopD)) {
                     day = true;
@@ -182,10 +190,10 @@ class CityBusRoutLoadThread implements Runnable {
         BusesRoutsLoader.addListBusStop(values);
         stopList.clear();
         myProgressDialog.SetProgressCount(ScheduleLoaderService.IncrementProgressCount());
-        synchronized(sync){
+        synchronized (sync) {
             sync.notify();
         }
-        Log.d(LOG_TAG, "CityBusRoutLoadThread"+Thread.currentThread().getId());
+        Log.d(LOG_TAG, "CityBusRoutLoadThread" + Thread.currentThread().getId());
     }
 }
 

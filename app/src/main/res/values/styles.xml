@@ -7,4 +7,33 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
+
+    <style name="LinearLayoutRootStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="LinearLayoutChildCentr">
+        <item name="android:background">@drawable/border_table</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="LinearLayoutChildLeftBut">
+        <item name="android:background">@drawable/border_table_left_but</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="LinearLayoutChildRightBut">
+        <item name="android:background">@drawable/border_table_right_but</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="TextViewChild">
+        <item name="android:textColor">#000000</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">3dp</item>
+    </style>
 </resources>

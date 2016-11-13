@@ -5,6 +5,10 @@
     <string name="LoadTitle">Идет загрузка расписания</string>
     <string name="app_name">Расписание автобусов Пинск</string>
     <string name="app_title">Расписание автобусов</string>
+    <string name="OtherStopEditorTitle">Редактор координат</string>
+    <string name="OtherStopEditorAppdateButton">Обновить</string>
+    <string name="OtherStopEditorSaveButton">Сохранить</string>
+    <string name="OtherStopEditorDefoltCoord">Нет координат</string>
     <string name="appbar_scrolling_view_behavior">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="appdate">Обновить расписание</string>
     <string name="appdateName">Обновление</string>
@@ -16,6 +20,7 @@
     <string name="countryBus">Междугородние автобусы</string>
     <string name="setting">Настройки</string>
     <string name="changes">Изменения вступят в силу при следующем запуске</string>
+    <string name="otherStopChanges">Новые координаты сохранены</string>
     <string name="massage">Нажмите на номер, чтобы позвонить.</string>
     <string name="NoInternet">Нет доступа в интернет. Включите передачу данных и повторите попытку</string>
     <string name="NoDownload">Для загрузки расписания нужен доступ в интернет. Включите передачу данных и повторите попытку</string>
